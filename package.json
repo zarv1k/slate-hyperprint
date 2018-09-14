@@ -4,9 +4,9 @@
   "version": "2.2.5",
   "license": "Apache-2.0",
   "repository": "git://github.com/GitbookIO/slate-hyperprint.git",
-  "main": "./dist/index.js",
+  "main": "./src/index.js",
   "bin": {
-    "slate-hyperprint": "./dist/bin/cli.js"
+    "slate-hyperprint": "./src/bin/cli.js"
   },
   "dependencies": {
     "indent-string": "^3.2.0",
