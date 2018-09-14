@@ -1,9 +1,18 @@
 // @flow
-import type { Block, Inline, Decoration, Mark } from 'slate';
+import type { Block, Inline } from 'slate';
 import type { SlateModel } from './types';
 import type { HyperScriptOptions, Options } from './options';
 import Tag from './tag';
 import { printString } from './utils';
+import {
+    applyDecorationMarks,
+    getModelType,
+    isDecorationMark
+} from './decoration';
+import {
+    isSelectionAtStartOfDocument,
+    insertFocusedSelectionTagMarkers
+} from './selection';
 
 // All Tag parsers
 const PARSERS = {
@@ -11,11 +20,19 @@ const PARSERS = {
         Tag.create({
             name: 'value',
             attributes: getAttributes(value, options),
-            children: parse(value.document, options)
+            children: [
+                ...parse(value.document, options),
+                ...(value.selection.isBlurred &&
+                !isSelectionAtStartOfDocument(value)
+                    ? PARSERS.selection(
+                          value.selection,
+                          options,
+                          isSelectionAtStartOfDocument(value)
+                      )
+                    : [])
+            ]
         })
     ],
-    // COMPAT
-    state: (state, options) => PARSERS.value(state, options),
     document: (document, options) => [
         Tag.create({
             name: 'document',
@@ -52,8 +69,7 @@ const PARSERS = {
         })
     ],
     text: (text, options) => {
-        // COMPAT
-        const leaves = text.getLeaves ? text.getLeaves() : text.getRanges();
+        const leaves = text.getLeaves();
         const leavesTags = leaves
             .flatMap(leaf => parse(leaf, options))
             .toArray();
@@ -91,12 +107,47 @@ const PARSERS = {
             ],
             [
                 {
-                    print: () => printString(leaf.text)
+                    print: () => {
+                        const selectionMarker = (options: any)
+                            .selectionMarkerRegExp;
+                        const print = printString(leaf.text);
+                        return selectionMarker
+                            ? print.replace(selectionMarker, '<$1 />')
+                            : print;
+                    }
                 }
             ]
         ),
-    // COMPAT
-    range: (range, options) => PARSERS.leaf(range, options)
+    selection: (selection, options, initial) => {
+        const children =
+            options.preserveKeys || !initial
+                ? [
+                      ...PARSERS.point(selection.anchor, options, 'anchor'),
+                      ...PARSERS.point(selection.focus, options, 'focus')
+                  ]
+                : [];
+        return selection.isFocused || children.length
+            ? [
+                  Tag.create({
+                      name: 'selection',
+                      attributes: selection.isFocused ? { focused: true } : {},
+                      children
+                  })
+              ]
+            : [];
+    },
+    point: (point, options, name) => [
+        Tag.create({
+            name,
+            attributes: {
+                ...(point.offset !== 0 ? { offset: point.offset } : {}),
+                // print either path or key
+                ...(options.preserveKeys
+                    ? { key: point.key }
+                    : { path: point.path.toArray() })
+            }
+        })
+    ]
 };
 
 /*
@@ -140,26 +191,21 @@ function getAttributes(
  * Parse a Slate model to a Tag representation
  */
 function parse(model: SlateModel, options: Options): Tag[] {
-    const object = model.object || model.kind;
+    const object = model.object;
     const parser = PARSERS[object];
     if (!parser) {
         throw new Error(`Unrecognized Slate model ${object}`);
     }
 
-    if (object === 'value' && model.decorations.size > 0) {
-        const change = model.change();
-        model.decorations.forEach((decoration: Decoration) => {
-            change.addMarkAtRange(
-                decoration,
-                {
-                    ...decoration.mark.toJSON(),
-                    type: `__@${decoration.mark.type}@__`
-                },
-                { normalize: false }
-            );
-        });
-        model = change.value;
+    if (object === 'value') {
+        if (model.decorations.size > 0) {
+            model = applyDecorationMarks(model);
+        }
+        if (model.selection.isFocused) {
+            model = insertFocusedSelectionTagMarkers(model, options);
+        }
     }
+
     return parser(model, options);
 }
 
@@ -173,6 +219,12 @@ function canPrintAsShorthand(model: SlateModel): boolean {
     return model.data.every((value, key) => validAttributeKey(key));
 }
 
+/**
+ * Checks if the model if void node via hyperscript options schema object
+ * @param {Block | Inline} model
+ * @param {Options} options
+ * @returns {boolean}
+ */
 function isVoid(model: Block | Inline, options: Options): boolean {
     if (!options.hyperscript) {
         return false;
@@ -197,6 +249,12 @@ function getTagName(model: SlateModel, options: Options): string {
     return canPrintAsShorthand(model) ? tagName : model.object;
 }
 
+/**
+ * Returns hyperscript tag according to createHyperscript() factory options
+ * @param {SlateModel} model
+ * @param {HyperscriptOptions} hyperscript
+ * @returns {string}
+ */
 function getHyperscriptTag(
     model: SlateModel,
     hyperscript?: HyperScriptOptions
@@ -215,17 +273,6 @@ function getHyperscriptTag(
     );
 
     return tagName || modelType;
-}
-
-function isDecorationMark(mark: Mark): boolean {
-    return mark.object === 'mark' && /__@.+@__/.test(mark.type);
-}
-
-function getModelType(model: SlateModel): string {
-    if (!isDecorationMark(model)) {
-        return model.type;
-    }
-    return model.type.replace(/__@(.+)@__/, '$1');
 }
 
 export default parse;
