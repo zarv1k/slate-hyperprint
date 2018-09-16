@@ -1,6 +1,5 @@
 // @flow
-import indentString from 'indent-string';
-import { type Options } from './options';
+import { type Options } from './types';
 import printAttribute from './attributes';
 
 /*
@@ -52,9 +51,9 @@ class Tag {
 
         return [
             `<${openingTagInner}>`,
-            indentString(printedChildren.join('\n'), 1, { indent: '    ' }),
+            printedChildren.join(''),
             `</${name}>`
-        ].join('\n');
+        ].join('');
     }
 }
 

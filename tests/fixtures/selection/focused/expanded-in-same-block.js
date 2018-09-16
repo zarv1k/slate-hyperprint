@@ -1,12 +1,13 @@
 /** @jsx h */
 
-import h from '../h';
+import h from '../../../h';
 
 const input = (
     <value>
         <document>
+            <paragraph />
             <paragraph>
-                Hello, <highlight>world</highlight>!
+                H<anchor />ello, <focus />world!
             </paragraph>
         </document>
     </value>
@@ -15,8 +16,9 @@ const input = (
 const output = `
 <value>
     <document>
+        <paragraph />
         <paragraph>
-            Hello, <highlight>world</highlight>!
+            H<anchor />ello, <focus />world!
         </paragraph>
     </document>
 </value>

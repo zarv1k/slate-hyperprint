@@ -4,8 +4,7 @@ import prettier from 'prettier/standalone';
 import babylon from 'prettier/parser-babylon';
 
 import parse from './parse';
-import type { Options } from './options';
-import type { SlateModel } from './types';
+import type { SlateModel, Options } from './types';
 
 const DEFAULT_OPTIONS: Options = {
     preserveKeys: false,
@@ -32,7 +31,7 @@ function hyperprint(
 
     const printed = parse(model, options)
         .map(tag => tag.print(options))
-        .join('\n');
+        .join('');
 
     const formatted = prettier.format(printed, {
         ...options.prettier,
