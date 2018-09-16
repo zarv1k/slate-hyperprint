@@ -47,23 +47,25 @@ var selectionOpenMarker = function selectionOpenMarker(value) {
  */
 var insertFocusedSelectionTagMarkers = exports.insertFocusedSelectionTagMarkers = function insertFocusedSelectionTagMarkers(value, options) {
     var selection = value.selection;
-    var isCollapsed = selection.isCollapsed,
+    var isExpanded = selection.isExpanded,
         isBlurred = selection.isBlurred,
+        isUnset = selection.isUnset,
         isForward = selection.isForward,
-        anchor = selection.anchor;
+        anchor = selection.anchor,
+        marks = selection.marks;
 
 
-    if (isBlurred) {
+    if (isUnset || isBlurred || marks && marks.size) {
         return value;
     }
 
     var open = selectionOpenMarker(value);
     var close = [].concat(_toConsumableArray(open)).reverse().join('');
 
-    var tags = isForward ? ['focus', 'anchor'] : ['anchor', 'focus'];
+    var tags = ['cursor'];
 
-    if (isCollapsed) {
-        tags = ['cursor'];
+    if (isExpanded) {
+        tags = isForward ? ['focus', 'anchor'] : ['anchor', 'focus'];
     }
 
     var change = value.change();

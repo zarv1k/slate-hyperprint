@@ -23,10 +23,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 // All Tag parsers
 var PARSERS = {
     value: function value(_value, options) {
+        var children = [].concat(_toConsumableArray(parse(_value.document, options)), _toConsumableArray(_value.selection.marks && _value.selection.marks.size || _value.selection.isBlurred && !(0, _selection2.isSelectionAtStartOfDocument)(_value) ? PARSERS.selection(_value.selection, options, (0, _selection2.isSelectionAtStartOfDocument)(_value)) : []));
         return [_tag2.default.create({
             name: 'value',
             attributes: getAttributes(_value, options),
-            children: [].concat(_toConsumableArray(parse(_value.document, options)), _toConsumableArray(_value.selection.isBlurred && !(0, _selection2.isSelectionAtStartOfDocument)(_value) ? PARSERS.selection(_value.selection, options, (0, _selection2.isSelectionAtStartOfDocument)(_value)) : []))
+            children: children
         })];
     },
     document: function document(_document, options) {
@@ -91,9 +92,16 @@ var PARSERS = {
     },
     selection: function selection(_selection, options, initial) {
         var children = options.preserveKeys || !initial ? [].concat(_toConsumableArray(PARSERS.point(_selection.anchor, options, 'anchor')), _toConsumableArray(PARSERS.point(_selection.focus, options, 'focus'))) : [];
-        return _selection.isFocused || children.length ? [_tag2.default.create({
+        var attributes = _extends({}, _selection.isFocused ? { focused: true } : {}, _selection.marks !== null && _selection.marks.size ? {
+            marks: _selection.marks.map(function (m) {
+                return _extends({
+                    type: m.type
+                }, m.data.size ? { data: m.data.toJSON() } : {});
+            }).toJS()
+        } : {});
+        return Object.keys(attributes).length || children.length ? [_tag2.default.create({
             name: 'selection',
-            attributes: _selection.isFocused ? { focused: true } : {},
+            attributes: attributes,
             children: children
         })] : [];
     },
