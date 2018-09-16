@@ -3,6 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.printString = undefined;
+
+var _selection = require('./selection');
+
 var charsToEscape = ['<', '>', '{', '}', "'", '"', '\n'];
 
 function shouldBeEscaped(s) {
@@ -39,8 +43,10 @@ function escape(s) {
     return '{\'' + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'}';
 }
 
-function printString(s) {
-    return preserveTrailingSpace(escape(s));
+function printString(s, options) {
+    var selectionMarker = options.selectionMarker;
+    s = selectionMarker ? (0, _selection.printFocusedSelection)(s, selectionMarker, escape) : escape(s);
+    return preserveTrailingSpace(s);
 }
 
 exports.printString = printString;

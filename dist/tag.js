@@ -6,11 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _indentString = require('indent-string');
-
-var _indentString2 = _interopRequireDefault(_indentString);
-
-require('./options');
+require('./types');
 
 var _attributes = require('./attributes');
 
@@ -68,7 +64,7 @@ var Tag = function () {
                 return '<' + openingTagInner + ' />';
             }
 
-            return ['<' + openingTagInner + '>', (0, _indentString2.default)(printedChildren.join('\n'), 1, { indent: '    ' }), '</' + name + '>'].join('\n');
+            return ['<' + openingTagInner + '>', printedChildren.join(''), '</' + name + '>'].join('');
         }
     }], [{
         key: 'create',

@@ -41,7 +41,7 @@ function hyperprint(model) {
 
     var printed = (0, _parse2.default)(model, options).map(function (tag) {
         return tag.print(options);
-    }).join('\n');
+    }).join('');
 
     var formatted = _standalone2.default.format(printed, _extends({}, options.prettier, {
         parser: 'babylon',

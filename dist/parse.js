@@ -12,7 +12,13 @@ var _tag2 = _interopRequireDefault(_tag);
 
 var _utils = require('./utils');
 
+var _decoration = require('./decoration');
+
+var _selection2 = require('./selection');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // All Tag parsers
 var PARSERS = {
@@ -20,12 +26,8 @@ var PARSERS = {
         return [_tag2.default.create({
             name: 'value',
             attributes: getAttributes(_value, options),
-            children: parse(_value.document, options)
+            children: [].concat(_toConsumableArray(parse(_value.document, options)), _toConsumableArray(_value.selection.isBlurred && !(0, _selection2.isSelectionAtStartOfDocument)(_value) ? PARSERS.selection(_value.selection, options, (0, _selection2.isSelectionAtStartOfDocument)(_value)) : []))
         })];
-    },
-    // COMPAT
-    state: function state(_state, options) {
-        return PARSERS.value(_state, options);
     },
     document: function document(_document, options) {
         return [_tag2.default.create({
@@ -55,8 +57,7 @@ var PARSERS = {
         })];
     },
     text: function text(_text, options) {
-        // COMPAT
-        var leaves = _text.getLeaves ? _text.getLeaves() : _text.getRanges();
+        var leaves = _text.getLeaves();
         var leavesTags = leaves.flatMap(function (leaf) {
             return parse(leaf, options);
         }).toArray();
@@ -83,14 +84,24 @@ var PARSERS = {
                 children: acc
             })];
         }, [{
-            print: function print() {
-                return (0, _utils.printString)(_leaf.text);
+            print: function print(o) {
+                return (0, _utils.printString)(_leaf.text, o);
             }
         }]);
     },
-    // COMPAT
-    range: function range(_range, options) {
-        return PARSERS.leaf(_range, options);
+    selection: function selection(_selection, options, initial) {
+        var children = options.preserveKeys || !initial ? [].concat(_toConsumableArray(PARSERS.point(_selection.anchor, options, 'anchor')), _toConsumableArray(PARSERS.point(_selection.focus, options, 'focus'))) : [];
+        return _selection.isFocused || children.length ? [_tag2.default.create({
+            name: 'selection',
+            attributes: _selection.isFocused ? { focused: true } : {},
+            children: children
+        })] : [];
+    },
+    point: function point(_point, options, name) {
+        return [_tag2.default.create({
+            name: name,
+            attributes: _extends({}, _point.offset !== 0 ? { offset: _point.offset } : {}, options.preserveKeys ? { key: _point.key } : { path: _point.path.toArray() })
+        })];
     }
 };
 
@@ -120,8 +131,8 @@ function getAttributes(model, options) {
         result = _extends({}, result, model.data.toJSON());
     }
 
-    if (result.type && isDecorationMark(model)) {
-        result.type = getModelType(result.type);
+    if (result.type && (0, _decoration.isDecorationMark)(model)) {
+        result.type = (0, _decoration.getModelType)(result.type);
     }
 
     return result;
@@ -131,21 +142,21 @@ function getAttributes(model, options) {
  * Parse a Slate model to a Tag representation
  */
 function parse(model, options) {
-    var object = model.object || model.kind;
+    var object = model.object;
     var parser = PARSERS[object];
     if (!parser) {
         throw new Error('Unrecognized Slate model ' + object);
     }
 
-    if (object === 'value' && model.decorations.size > 0) {
-        var change = model.change();
-        model.decorations.forEach(function (decoration) {
-            change.addMarkAtRange(decoration, _extends({}, decoration.mark.toJSON(), {
-                type: '__@' + decoration.mark.type + '@__'
-            }), { normalize: false });
-        });
-        model = change.value;
+    if (object === 'value') {
+        if (model.decorations.size > 0) {
+            model = (0, _decoration.applyDecorationMarks)(model);
+        }
+        if (model.selection.isFocused) {
+            model = (0, _selection2.insertFocusedSelectionTagMarkers)(model, options);
+        }
     }
+
     return parser(model, options);
 }
 
@@ -164,6 +175,12 @@ function canPrintAsShorthand(model) {
     });
 }
 
+/**
+ * Checks if the model if void node via hyperscript options schema object
+ * @param {Block | Inline} model
+ * @param {Options} options
+ * @returns {boolean}
+ */
 function isVoid(model, options) {
     if (!options.hyperscript) {
         return false;
@@ -186,8 +203,14 @@ function getTagName(model, options) {
     return canPrintAsShorthand(model) ? tagName : model.object;
 }
 
+/**
+ * Returns hyperscript tag according to createHyperscript() factory options
+ * @param {SlateModel} model
+ * @param {HyperscriptOptions} hyperscript
+ * @returns {string}
+ */
 function getHyperscriptTag(model, hyperscript) {
-    var modelType = getModelType(model);
+    var modelType = (0, _decoration.getModelType)(model);
 
     var objects = model.object + 's';
     if (!hyperscript || !hyperscript[objects]) {
@@ -201,17 +224,6 @@ function getHyperscriptTag(model, hyperscript) {
     });
 
     return tagName || modelType;
-}
-
-function isDecorationMark(mark) {
-    return mark.object === 'mark' && /__@.+@__/.test(mark.type);
-}
-
-function getModelType(model) {
-    if (!isDecorationMark(model)) {
-        return model.type;
-    }
-    return model.type.replace(/__@(.+)@__/, '$1');
 }
 
 exports.default = parse;

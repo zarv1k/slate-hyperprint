@@ -34,8 +34,8 @@ if (input.length > 0) {
 
     var json = _jsYaml2.default.safeLoad(_fs2.default.readFileSync(path));
     var document = json.value && json.value.document || json.state && json.state.document || json.document || json;
-    // COMPAT: Use Value or State
-    var state = (_slate2.default.Value || _slate2.default.State).create({ document: document });
+
+    var state = _slate2.default.Value.create({ document: document });
 
     // eslint-disable-next-line no-console
     console.log((0, _2.default)(state.document));
