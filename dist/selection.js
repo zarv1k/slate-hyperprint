@@ -76,7 +76,7 @@ var insertFocusedSelectionTagMarkers = exports.insertFocusedSelectionTagMarkers 
                 path = _ref2.path,
                 offset = _ref2.offset;
 
-            ch.insertTextByPath(path, offset, '' + open + tag + close);
+            ch.insertTextByPath(path, offset, '' + open + tag + close, undefined, { normalize: false });
         });
     });
 
