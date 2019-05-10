@@ -3,7 +3,7 @@
 import h from '../helpers/h'
 
 const input = (
-  <value>
+  <value data={{ololo:'trololo'}}>
     <document>
       <paragraph>Short text.</paragraph>
     </document>
