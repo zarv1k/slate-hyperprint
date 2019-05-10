@@ -22,6 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DEFAULT_OPTIONS = {
   preserveKeys: false,
+  preserveData: false,
   strict: false,
   prettier: {
     semi: false,
