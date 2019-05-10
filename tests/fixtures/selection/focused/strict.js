@@ -1,39 +1,41 @@
 /** @jsx h */
 
-import h from '../../../h';
+import h from '../../../helpers/h'
 
 const options = {
-    strict: true
-};
+  strict: true,
+}
 
 const input = (
-    <value>
-        <document>
-            <paragraph />
-            <paragraph>
-                <anchor />
-            </paragraph>
-            <paragraph>
-                H<focus />ello, world!
-            </paragraph>
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph>
+        <text />
+      </paragraph>
+      <paragraph>
+        <anchor />
+      </paragraph>
+      <paragraph>
+        H<focus />ello, world!
+      </paragraph>
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph>
-            <text />
-        </paragraph>
-        <paragraph>
-            <anchor />
-        </paragraph>
-        <paragraph>
-            H<focus />ello, world!
-        </paragraph>
-    </document>
+  <document>
+    <paragraph>
+      <text />
+    </paragraph>
+    <paragraph>
+      <anchor />
+    </paragraph>
+    <paragraph>
+      H<focus />ello, world!
+    </paragraph>
+  </document>
 </value>
-`;
+`
 
-export { input, output, options };
+export { input, output, options }

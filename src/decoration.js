@@ -1,6 +1,4 @@
-// @flow
-import type { Value, Decoration, Mark } from 'slate';
-import type { SlateModel } from './types';
+import { Editor } from 'slate'
 
 /**
  * Checks is mark type is decoration in real
@@ -8,8 +6,9 @@ import type { SlateModel } from './types';
  * @param {Mark} mark
  * @returns {boolean}
  */
-export const isDecorationMark = (mark: Mark): boolean =>
-    mark.object === 'mark' && /__@.+@__/.test(mark.type);
+
+export const isDecorationMark = mark =>
+  mark.object === 'mark' && /__@.+@__/.test(mark.type)
 
 /**
  * Returns model type
@@ -17,10 +16,9 @@ export const isDecorationMark = (mark: Mark): boolean =>
  * @param {SlateModel} model
  * @returns {string}
  */
-export const getModelType = (model: SlateModel): string =>
-    isDecorationMark(model)
-        ? model.type.replace(/__@(.+)@__/, '$1')
-        : model.type;
+
+export const getModelType = model =>
+  isDecorationMark(model) ? model.type.replace(/__@(.+)@__/, '$1') : model.type
 
 /**
  * Applies decoration marks
@@ -30,17 +28,19 @@ export const getModelType = (model: SlateModel): string =>
  * @param {Value} value
  * @returns {Value}
  */
-export const applyDecorationMarks = (value: Value): Value => {
-    const change = value.change();
-    value.decorations.forEach((decoration: Decoration) => {
-        change.addMarkAtRange(
-            decoration,
-            {
-                ...decoration.mark.toJSON(),
-                type: `__@${decoration.mark.type}@__`
-            },
-            { normalize: false }
-        );
-    });
-    return change.value;
-};
+
+export const applyDecorationMarks = value => {
+  const editor = new Editor({ value })
+
+  value.decorations.forEach(decoration => {
+    editor.withoutSaving(() => {
+      editor.withoutNormalizing(() => {
+        editor.addMarkAtRange(decoration, {
+          ...decoration.mark.toJSON(),
+          type: `__@${decoration.mark.type}@__`,
+        })
+      })
+    })
+  })
+  return editor.value
+}

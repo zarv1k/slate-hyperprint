@@ -1,31 +1,31 @@
 /** @jsx h */
 
-import h from '../../../h';
+import h from '../../../helpers/h'
 
 const input = (
-    <value>
-        <document>
-            <paragraph>
-                __@anchor@__<anchor />__@@focus@@__
-            </paragraph>
-            <paragraph>
-                Hel<focus />lo, __@@@anchor@@@__ world!
-            </paragraph>
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph>
+        __@anchor@__<anchor />__@@focus@@__
+      </paragraph>
+      <paragraph>
+        Hel<focus />lo, __@@@anchor@@@__ world!
+      </paragraph>
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph>
-            __@anchor@__<anchor />__@@focus@@__
-        </paragraph>
-        <paragraph>
-            Hel<focus />lo, __@@@anchor@@@__ world!
-        </paragraph>
-    </document>
+  <document>
+    <paragraph>
+      __@anchor@__<anchor />__@@focus@@__
+    </paragraph>
+    <paragraph>
+      Hel<focus />lo, __@@@anchor@@@__ world!
+    </paragraph>
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }

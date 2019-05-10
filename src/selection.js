@@ -1,21 +1,30 @@
-// @flow
-import type { Value } from 'slate';
-import type { Options } from './types';
+import { Editor } from 'slate'
 
 /**
  * Checks is selection at initial position: it is collapsed and is before the first character of the first text node
  *
- * @param value
+ * @param {Value} value
  * @returns {boolean}
  */
-export const isSelectionAtStartOfDocument = ({
-    selection,
-    document
-}: Value): boolean =>
-    selection.isCollapsed &&
-    selection.anchor.offset === 0 &&
-    selection.focus.offset === 0 &&
-    selection.anchor.isAtStartOfNode(document.getFirstText());
+
+export const isSelectionAtStartOfDocument = ({ selection, document }) =>
+  selection.isCollapsed &&
+  selection.anchor.offset === 0 &&
+  selection.focus.offset === 0 &&
+  selection.anchor.isAtStartOfNode(document.getFirstText())
+
+/**
+ *
+ * Checks selection is set
+ * @param selection
+ * @returns {boolean}
+ */
+
+export const isSelectionSet = selection =>
+  selection.anchor &&
+  selection.anchor.isSet &&
+  selection.focus &&
+  selection.focus.isSet
 
 /**
  * Builds the open part of the selection marker text.
@@ -25,14 +34,15 @@ export const isSelectionAtStartOfDocument = ({
  * @param {string} open
  * @returns {string}
  */
-const selectionOpenMarker = (value: Value, open: string = '__@'): string => {
-    const text: string = value.document.text;
-    const close = [...open].reverse().join('');
 
-    return text.includes(open) || text.includes(close)
-        ? selectionOpenMarker(value, `${open}@`)
-        : open;
-};
+const selectionOpenMarker = (value, open = '__@') => {
+  const text = value.document.text
+  const close = [...open].reverse().join('')
+
+  return text.includes(open) || text.includes(close)
+    ? selectionOpenMarker(value, `${open}@`)
+    : open
+}
 
 /**
  * Insert selection tag markers
@@ -41,56 +51,43 @@ const selectionOpenMarker = (value: Value, open: string = '__@'): string => {
  * This function inserts special text strings that will be replaced by focused selection tags while printing the document.
  * It also saves selection marker open tag into the options for replacement while printing leaf nodes.
  * @param {Value} value
- * @param {Options} options
+ * @param {Object} options
  * @returns {Value}
  */
-export const insertFocusedSelectionTagMarkers = (
-    value: Value,
-    options: Options
-): Value => {
-    const { selection } = value;
-    const {
-        isExpanded,
-        isBlurred,
-        isUnset,
-        isForward,
-        anchor,
-        marks
-    } = selection;
 
-    if (isUnset || isBlurred || (marks && marks.size)) {
-        return value;
-    }
+export const insertFocusedSelectionTagMarkers = (value, options) => {
+  const { selection } = value
+  const { isExpanded, isBlurred, isUnset, isForward, anchor, marks } = selection
 
-    const open = selectionOpenMarker(value);
-    const close = [...open].reverse().join('');
+  if (isUnset || isBlurred || (marks && marks.size)) {
+    return value
+  }
 
-    let tags = ['cursor'];
+  const open = selectionOpenMarker(value)
+  const close = [...open].reverse().join('')
 
-    if (isExpanded) {
-        tags = isForward ? ['focus', 'anchor'] : ['anchor', 'focus'];
-    }
+  let tags = ['cursor']
 
-    const change = value.change();
+  if (isExpanded) {
+    tags = isForward ? ['focus', 'anchor'] : ['anchor', 'focus']
+  }
 
-    change.call(ch =>
-        tags.forEach(tag => {
-            const { path, offset } = selection[tag] || anchor;
-            ch.insertTextByPath(
-                path,
-                offset,
-                `${open}${tag}${close}`,
-                undefined,
-                { normalize: false }
-            );
-        })
-    );
+  const editor = new Editor({ value })
 
-    // selectionMarker in options saved only for internal usage
-    (options: any).selectionMarker = open;
+  editor.withoutSaving(() => {
+    editor.command(e =>
+      tags.forEach(tag => {
+        const { path, offset } = selection[tag] || anchor
+        e.insertTextByPath(path, offset, `${open}${tag}${close}`)
+      })
+    )
+  })
 
-    return change.value;
-};
+  // selectionMarker in options saved only for internal usage
+  options.selectionMarker = open
+
+  return editor.value
+}
 
 /**
  * Prints focused selection tags with escaping texts around them
@@ -100,27 +97,22 @@ export const insertFocusedSelectionTagMarkers = (
  * @param {Function} escape
  * @returns {string}
  */
-export const printFocusedSelection = (
-    s: string,
-    marker: string,
-    escape: Function
-): string => {
-    const open = marker;
-    const close = marker
-        .split('')
-        .reverse()
-        .join('');
 
-    const selection = new RegExp(`${open}(focus|anchor|cursor)${close}`);
-    const splitter = new RegExp(`(${open}(?:focus|anchor|cursor)${close})`);
+export const printFocusedSelection = (s, marker, escape) => {
+  const open = marker
+  const close = marker
+    .split('')
+    .reverse()
+    .join('')
 
-    return s
-        .split(splitter)
-        .map(
-            text =>
-                selection.test(text)
-                    ? text.replace(selection, '<$1 />')
-                    : escape(text)
-        )
-        .join('');
-};
+  const selection = new RegExp(`${open}(focus|anchor|cursor)${close}`)
+  const splitter = new RegExp(`(${open}(?:focus|anchor|cursor)${close})`)
+
+  return s
+    .split(splitter)
+    .map(
+      text =>
+        selection.test(text) ? text.replace(selection, '<$1 />') : escape(text)
+    )
+    .join('')
+}

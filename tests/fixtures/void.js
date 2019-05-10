@@ -1,59 +1,53 @@
-/** @flow */
 /** @jsx h */
 
-import { createHyperscript } from 'slate-hyperscript';
-import type { HyperScriptOptions } from '../../src/types';
+import { createHyperscript } from 'slate-hyperscript'
 
-const hyperscript: HyperScriptOptions = {
+const hyperscript = {
+  blocks: {
+    paragraph: 'paragraph',
+    image: 'Image',
+  },
+  inlines: {
+    link: 'link',
+  },
+  schema: {
     blocks: {
-        paragraph: 'paragraph',
-        image: 'Image'
+      Image: {
+        isVoid: true,
+      },
     },
     inlines: {
-        link: 'link'
+      link: {
+        isVoid: true,
+      },
     },
-    schema: {
-        blocks: {
-            Image: {
-                isVoid: true
-            }
-        },
-        inlines: {
-            link: {
-                isVoid: true
-            }
-        }
-    }
-};
+  },
+}
 
-export const options = { hyperscript };
+export const options = { hyperscript }
 
-const h = createHyperscript(hyperscript);
+const h = createHyperscript(hyperscript)
 
 const input = (
-    <value>
-        <document>
-            <paragraph>
-                <inline type="link" />
-            </paragraph>
-            <block type="image" data={{ src: 'image.png' }} />
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph>
+        <inline type="link" />
+      </paragraph>
+      <block type="image" data={{ src: 'image.png' }} />
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph>
-            <link />
-        </paragraph>
-        <image src="image.png" />
-    </document>
-    <selection>
-        <anchor path={[0, 1, 0]} />
-        <focus path={[0, 1, 0]} />
-    </selection>
+  <document>
+    <paragraph>
+      <link />
+    </paragraph>
+    <image src="image.png" />
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }

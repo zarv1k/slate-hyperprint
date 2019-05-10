@@ -1,43 +1,43 @@
 /** @jsx h */
 
-import h from '../../../h';
+import h from '../../../helpers/h'
 
 export const options = {
-    preserveKeys: true
-};
+  preserveKeys: true,
+}
 
 const input = (
-    <value>
-        <document key="a">
-            <paragraph key="b">
-                <text key="c">
-                    <anchor />
-                </text>
-            </paragraph>
-            <paragraph key="d">
-                <text key="e">
-                    H<focus />ello, world!
-                </text>
-            </paragraph>
-        </document>
-    </value>
-);
+  <value>
+    <document key="a">
+      <paragraph key="b">
+        <text key="c">
+          <anchor />
+        </text>
+      </paragraph>
+      <paragraph key="d">
+        <text key="e">
+          H<focus />ello, world!
+        </text>
+      </paragraph>
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document key="a">
-        <paragraph key="b">
-            <text key="c">
-                <anchor />
-            </text>
-        </paragraph>
-        <paragraph key="d">
-            <text key="e">
-                H<focus />ello, world!
-            </text>
-        </paragraph>
-    </document>
+  <document key="a">
+    <paragraph key="b">
+      <text key="c">
+        <anchor />
+      </text>
+    </paragraph>
+    <paragraph key="d">
+      <text key="e">
+        H<focus />ello, world!
+      </text>
+    </paragraph>
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }

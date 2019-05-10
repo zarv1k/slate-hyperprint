@@ -1,24 +1,24 @@
 /** @jsx h */
 
-import h from '../h';
+import h from '../helpers/h'
 
-const space = ' ';
+const space = ' '
 const input = (
-    <value>
-        <document>
-            <paragraph />
-            <paragraph>{space}</paragraph>
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph />
+      <paragraph>{space}</paragraph>
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph />
-        <paragraph> </paragraph>
-    </document>
+  <document>
+    <paragraph />
+    <paragraph> </paragraph>
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }
