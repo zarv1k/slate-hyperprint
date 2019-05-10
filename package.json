@@ -44,7 +44,7 @@
     "slate-hyperscript": "0.12.1"
   },
   "scripts": {
-    "build": "babel ./src --out-dir ./dist",
+    "build": "babel ./src --out-dir ./dist && cp src/index.d.ts dist/index.d.ts",
     "prepublish": "npm run build",
     "lint": "eslint ./src ./website",
     "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --reporter=list",
