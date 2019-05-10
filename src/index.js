@@ -5,6 +5,7 @@ import parse from './parse'
 
 const DEFAULT_OPTIONS = {
   preserveKeys: false,
+  preserveData: false,
   strict: false,
   prettier: {
     semi: false,

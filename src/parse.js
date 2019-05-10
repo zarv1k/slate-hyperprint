@@ -167,11 +167,13 @@ function getAttributes(
   }
 
   // data
-  if (!asShorthand && !model.data.isEmpty()) {
-    result.data = model.data.toJSON()
-  } else {
-    // Spread the data as individual attributes
-    result = { ...result, ...model.data.toJSON() }
+  if (model.object !== 'value' || options.preserveData) {
+    if (!asShorthand && !model.data.isEmpty()) {
+      result.data = model.data.toJSON()
+    } else {
+      // Spread the data as individual attributes
+      result = { ...result, ...model.data.toJSON() }
+    }
   }
 
   if (result.type && isDecorationMark(model)) {
