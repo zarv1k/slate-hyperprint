@@ -1,10 +1,11 @@
 {
   "name": "@zarv1k/slate-hyperprint",
   "description": "A Slate plugin to print Slate models to their slate-hyperscript representation.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "Apache-2.0",
   "repository": "git://github.com/zarv1k/slate-hyperprint.git",
   "main": "./dist/index.js",
+  "files": ["dist", "index.d.ts"],
   "dependencies": {
     "is-plain-object": "^2.0.4",
     "prettier": "1.13.6",
@@ -48,6 +49,7 @@
     "start": "npm run build-website; npm run serve-website",
     "deploy-website": "npm run build-website; gh-pages -d ./website"
   },
+
   "keywords": [
     "slate",
     "hyperscript",
