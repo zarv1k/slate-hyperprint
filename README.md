@@ -19,7 +19,7 @@ yarn add @zarv1k/slate-hyperprint [--dev]
 
 ```js
 import Slate from 'slate';
-import hyperprint from 'slate-hyperprint';
+import hyperprint from '@zarv1k/slate-hyperprint';
 
 console.log(
   hyperprint(
