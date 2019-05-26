@@ -1,141 +1,206 @@
-.container {
-    width: 100%;
-    max-width: 1024px;
-    margin: 30px auto;
-    position: relative;
-
-    font-family: "Fira Sans", sans-serif;
-    font-size: 15px;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.side-by-side {
-    display: flex;
-    flex-direction: row;
+* {
+  box-sizing: border-box;
 }
 
-.left-side, .right-side {
-    min-width: 512px;
-    padding: 20px;
-    position: relative;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
 }
 
-
-h1 {
-    font-size: 20px;
+.App {
+  background-color: #282c34;
+  text-align: center;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#inputarea {
-    font-family: "Fira Mono", monospace;
-    font-size: 15px;
-    height: 500px;
-    width: 100%;
-    border: none;
-    overflow: auto;
-    background: #f5f5f5;
-    padding: 0px;
+.App-body {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  color: white;
+  height: calc(100% - 120px);
+}
+
+.right-side,
+.left-side {
+  width: 50%;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.left-side textarea {
+  width: 100%;
+  padding: 15px;
+  flex: 1 0 auto;
+  resize: none;
+  outline: none;
+  font-family: "Fira Mono", monospace;
+  background-color: #2a2f3a;
+  border: 0 none;
+  border-radius: 6px;
+  color: whitesmoke;
+  box-shadow: 0 0 2px 1px whitesmoke;
 }
 
 pre {
-    font-family: "Fira Mono", monospace;
-    font-size: 15px;
-    background: #f5f5f5;
-    padding: 30px;
-    overflow: auto;
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.right-side pre.language-jsx {
+  overflow: auto;
+  margin: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 2px 1px whitesmoke;
+}
+
+h3 {
+  flex: 0 0 auto;
+}
+
+.App-header {
+  color: white;
+  padding-top: 50px;
+}
+
+.App-footer {
+  margin-bottom: 20px;
+}
+
+.App-link:hover {
+  text-decoration: none;
+}
+.App-link {
+  color: #61dafb;
+}
+.App-version {
+  color: #61dafb;
+  font-size: small;
+}
+
+.App-reset {
+  margin-top: 0;
+}
+
+.App-editor {
+  padding: 10px;
+  background-color: whitesmoke;
+  color: #282c34;
+  min-width: 600px;
+  min-height: 150px;
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+  background: #2a2f3a;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: whitesmoke;
+  -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-corner {
+  background: #2a2f3a;
+  border-radius: 6px;
 }
 
 
 /* Prism */
 
-/**
- * prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
+code[class*='language-'],
+pre[class*='language-'] {
+  color: #e0e0e0;
+  background: none;
+  /*text-shadow: 0 1px rgba(0, 0, 0, 1);*/
+  font-family: monaco, Consolas, 'Lucida Console', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
 
-code[class*="language-"],
-pre[class*="language-"] {
-	color: black;
-	background: none;
-	text-shadow: 0 1px white;
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	word-wrap: normal;
-	line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
 
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
-
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
-}
-
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-	text-shadow: none;
-	background: #b3d4fc;
-}
-
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
-	text-shadow: none;
-	background: #b3d4fc;
-}
-
-@media print {
-	code[class*="language-"],
-	pre[class*="language-"] {
-		text-shadow: none;
-	}
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
 /* Code blocks */
-pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
+pre[class*='language-'] {
+  padding: 1em;
+  margin: 0.5em 0;
+  overflow: auto;
+  border-radius: 0.3em;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-	background: #f5f2f0;
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+  background: #2a2f3a;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
-	white-space: normal;
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: slategray;
+  color: #969896;
 }
 
 .token.punctuation {
-	color: #999;
+  color: #f8f8f2;
 }
 
 .namespace {
-	opacity: .7;
+  opacity: 0.7;
 }
 
 .token.property,
 .token.tag,
-.token.boolean,
-.token.number,
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #905;
+  color: #6fb3d2;
+}
+
+.token.boolean,
+.token.number {
+  color: #b294bb;
 }
 
 .token.selector,
@@ -144,42 +209,42 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #690;
+  color: #a1c668;
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
-.style .token.string {
-	color: #a67f59;
-	background: hsla(0, 0%, 100%, .5);
+.style .token.string,
+.token.variable {
+  color: #f8f8f2;
 }
 
 .token.atrule,
 .token.attr-value,
-.token.keyword {
-	color: #07a;
+.token.function,
+.token.class-name {
+  color: #f0c674;
 }
 
-.token.function {
-	color: #DD4A68;
+.token.keyword {
+  color: #66d9ef;
 }
 
 .token.regex,
-.token.important,
-.token.variable {
-	color: #e90;
+.token.important {
+  color: #fc6d24;
 }
 
 .token.important,
 .token.bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 .token.italic {
-	font-style: italic;
+  font-style: italic;
 }
 
 .token.entity {
-	cursor: help;
+  cursor: help;
 }
