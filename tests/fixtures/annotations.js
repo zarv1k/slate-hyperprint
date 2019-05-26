@@ -2,12 +2,12 @@
 
 import h from '../helpers/h'
 
-const space = ' '
 const input = (
   <value>
     <document>
-      <paragraph />
-      <paragraph>{space}</paragraph>
+      <paragraph>
+        Hello, <highlight key="hl" />world<highlight key="hl" />!
+      </paragraph>
     </document>
   </value>
 )
@@ -15,8 +15,9 @@ const input = (
 const output = `
 <value>
   <document>
-    <paragraph />
-    <paragraph> </paragraph>
+    <paragraph>
+      Hello, <highlight key="hl" />world<highlight key="hl" />!
+    </paragraph>
   </document>
 </value>
 `

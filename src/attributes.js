@@ -1,57 +1,58 @@
-// @flow
-import isPlainObject from 'is-plain-object';
-import printComplexDataStructure from './printComplexDataStructure';
+import isPlainObject from 'is-plain-object'
+import printComplexDataStructure from './printComplexDataStructure'
 
 /*
 Based on
 https://github.com/algolia/react-element-to-jsx-string/blob/master/src/formatter/formatPropValue.js
 */
 
-const escape = (s: string): string => s.replace(/"/g, '&quot;');
+const escape = s => s.replace(/"/g, '&quot;')
 
 /*
  * Print a tag attribute, for example as 'key={value}' or 'key="value"' or 'key'
  */
-function printAttributeValue(value: any): string {
-    if (typeof value === 'number') {
-        return `{${String(value)}}`;
-    }
 
-    if (typeof value === 'string') {
-        return `"${escape(value)}"`;
-    }
+function printAttributeValue(value) {
+  if (typeof value === 'number') {
+    return `{${String(value)}}`
+  }
 
-    // > "Symbols (new in ECMAScript 2015, not yet supported in Flow)"
-    // @see: https://flow.org/en/docs/types/primitives/
-    // $FlowFixMe: Flow does not support Symbol
-    if (typeof value === 'symbol') {
-        throw new Error('not implemented');
-    }
+  if (typeof value === 'string') {
+    return `"${escape(value)}"`
+  }
 
-    if (typeof value === 'function') {
-        throw new Error('not implemented');
-    }
+  // > "Symbols (new in ECMAScript 2015, not yet supported in Flow)"
+  // @see: https://flow.org/en/docs/types/primitives/
+  // $FlowFixMe: Flow does not support Symbol
+  if (typeof value === 'symbol') {
+    throw new Error('not implemented')
+  }
 
-    if (value instanceof Date) {
-        return `{new Date("${value.toISOString()}")}`;
-    }
+  if (typeof value === 'function') {
+    throw new Error('not implemented')
+  }
 
-    if (isPlainObject(value) || Array.isArray(value)) {
-        return `{${printComplexDataStructure(value)}}`;
-    }
+  if (value instanceof Date) {
+    return `{new Date("${value.toISOString()}")}`
+  }
 
-    return `{${String(value)}}`;
+  if (isPlainObject(value) || Array.isArray(value)) {
+    return `{${printComplexDataStructure(value)}}`
+  }
+
+  return `{${String(value)}}`
 }
 
 /*
  * Print a tag attribute to 'key={value}' or 'key' for `true`
  */
-function printAttribute(key: string, value: any) {
-    if (value === true) {
-        return key;
-    }
 
-    return `${key}=${printAttributeValue(value)}`;
+function printAttribute(key, value) {
+  if (value === true) {
+    return key
+  }
+
+  return `${key}=${printAttributeValue(value)}`
 }
 
-export default printAttribute;
+export default printAttribute

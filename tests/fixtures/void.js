@@ -1,27 +1,53 @@
 /** @jsx h */
 
-import h from '../h';
+import { createHyperscript } from 'slate-hyperscript'
+
+const hyperscript = {
+  blocks: {
+    paragraph: 'paragraph',
+    image: 'Image',
+  },
+  inlines: {
+    link: 'link',
+  },
+  schema: {
+    blocks: {
+      Image: {
+        isVoid: true,
+      },
+    },
+    inlines: {
+      link: {
+        isVoid: true,
+      },
+    },
+  },
+}
+
+export const options = { hyperscript }
+
+const h = createHyperscript(hyperscript)
 
 const input = (
-    <value>
-        <document>
-            <paragraph>
-                <inline type="link" isVoid />
-            </paragraph>
-            <block type="image" isVoid data={{ src: 'image.png' }} />
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph>
+        <inline type="link" />
+      </paragraph>
+      <block type="image" data={{ src: 'image.png' }} />
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph>
-            <link />
-        </paragraph>
-        <image src="image.png" />
-    </document>
+  <document>
+    <paragraph>
+      <link />
+    </paragraph>
+    <image src="image.png" />
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }

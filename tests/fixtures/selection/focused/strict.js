@@ -1,22 +1,22 @@
 /** @jsx h */
 
-import h from '../helpers/h'
+import h from '../../../helpers/h'
 
 const options = {
   strict: true,
 }
 
-const space = ' '
 const input = (
   <value>
     <document>
-      <paragraph />
-      <paragraph>{space}</paragraph>
       <paragraph>
         <text />
       </paragraph>
       <paragraph>
-        <link>inlines are surrounded by empty texts</link>
+        <anchor />
+      </paragraph>
+      <paragraph>
+        H<focus />ello, world!
       </paragraph>
     </document>
   </value>
@@ -25,13 +25,14 @@ const input = (
 const output = `
 <value>
   <document>
-    <paragraph />
-    <paragraph> </paragraph>
     <paragraph>
       <text />
     </paragraph>
     <paragraph>
-      <link>inlines are surrounded by empty texts</link>
+      <anchor />
+    </paragraph>
+    <paragraph>
+      H<focus />ello, world!
     </paragraph>
   </document>
 </value>

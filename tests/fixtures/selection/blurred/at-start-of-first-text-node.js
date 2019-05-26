@@ -1,13 +1,11 @@
 /** @jsx h */
 
-import h from '../helpers/h'
+import h from '../../../helpers/h'
 
-const space = ' '
 const input = (
   <value>
     <document>
-      <paragraph />
-      <paragraph>{space}</paragraph>
+      <paragraph>Hello, world!</paragraph>
     </document>
   </value>
 )
@@ -15,8 +13,7 @@ const input = (
 const output = `
 <value>
   <document>
-    <paragraph />
-    <paragraph> </paragraph>
+    <paragraph>Hello, world!</paragraph>
   </document>
 </value>
 `

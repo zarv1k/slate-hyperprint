@@ -1,21 +1,21 @@
 /** @jsx h */
 
-import h from '../h';
+import h from '../helpers/h'
 
 const input = (
-    <value>
-        <document>
-            <paragraph>Short text.</paragraph>
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <paragraph>Short text.</paragraph>
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <paragraph>Short text.</paragraph>
-    </document>
+  <document>
+    <paragraph>Short text.</paragraph>
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }

@@ -1,21 +1,21 @@
 /** @jsx h */
 
-import h from '../h';
+import h from '../helpers/h'
 
 const input = (
-    <value>
-        <document>
-            <block type="image" isVoid data={{ 0: 'foo' }} />
-        </document>
-    </value>
-);
+  <value>
+    <document>
+      <block type="image" data={{ 0: 'foo' }} />
+    </document>
+  </value>
+)
 
 const output = `
 <value>
-    <document>
-        <block data={{ '0': 'foo' }} isVoid type="image" />
-    </document>
+  <document>
+    <block data={{ '0': 'foo' }} type="image" />
+  </document>
 </value>
-`;
+`
 
-export { input, output };
+export { input, output }
