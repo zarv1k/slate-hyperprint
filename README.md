@@ -9,6 +9,8 @@ You can use `@zarv1k/slate-hyperprint` as a library to:
 - Improve the output of unit tests by comparing hyperscript strings instead of JSON values.
 - Facilitate debugging and console logging of Slate values.
 
+See the [online demo](https://zarv1k.github.io/slate-hyperprint), that converts a Slate JSON representation to a Slate hyperscript representation.
+
 # Setup
 
 ```
@@ -85,4 +87,3 @@ yarn build
 
 - Original library [repo](https://github.com/GitbookIO/slate-hyperprint)
 - The React equivalent [react-element-to-jsx-string](https://github.com/algolia/react-element-to-jsx-string) is and will remain a great source of inspiration.
-
