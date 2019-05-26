@@ -9,8 +9,6 @@ You can use `slate-hyperprint` as a library to:
 - Improve the output of unit tests by comparing hyperscript strings instead of JSON values.
 - Facilitate debugging and console logging of Slate values.
 
-See the [online demo](https://soreine.github.io/slate-hyperprint), that converts a Slate JSON representation to a Slate hyperscript representation.
-
 # Setup
 
 ```
