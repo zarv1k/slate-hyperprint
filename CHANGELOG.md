@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 # Unreleased
 
+# 3.0.0 - 26/05/2019
+
+- compatibility with `slate@>=0.47`
+- supports focused/blured selection
+- supports annotations
+- added `preserveData` option
+
 # 2.2.6 - 17/09/2018
 
 - User standalone version of prettier@1.13.0 to use hyperprint in browser environment
