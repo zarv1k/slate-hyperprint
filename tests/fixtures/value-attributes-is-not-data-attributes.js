@@ -5,7 +5,7 @@ import h from '../helpers/h'
 const options = { preserveData: true }
 
 const input = (
-  <value data={{ ololo: 'trololo' }}>
+  <value ololo="trololo" azaza="tratata">
     <document>
       <paragraph ololo="trololo">Short text.</paragraph>
     </document>
@@ -13,7 +13,7 @@ const input = (
 )
 
 const output = `
-<value data={{ ololo: 'trololo' }}>
+<value>
   <document>
     <paragraph ololo="trololo">Short text.</paragraph>
   </document>

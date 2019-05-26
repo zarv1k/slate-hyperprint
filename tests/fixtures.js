@@ -48,6 +48,7 @@ export const fixtures = (...args) => {
             if (process.env.CI) {
               throw new Error(message)
             } else {
+              // eslint-disable-next-line no-console
               console.warn(message)
             }
 

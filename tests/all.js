@@ -5,6 +5,7 @@ import { fixtures } from './fixtures'
 /**
  * Tests.
  */
+
 describe('slate-hyperprint', () => {
   fixtures(__dirname, 'fixtures', ({ module }) => {
     const { input, output, options } = module
