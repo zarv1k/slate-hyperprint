@@ -4,7 +4,7 @@
 
 A library to convert Slate models to their slate-hyperscript representation.
 
-You can use `slate-hyperprint` as a library to:
+You can use `@zarv1k/slate-hyperprint` as a library to:
 
 - Improve the output of unit tests by comparing hyperscript strings instead of JSON values.
 - Facilitate debugging and console logging of Slate values.
