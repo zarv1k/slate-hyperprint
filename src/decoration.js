@@ -32,13 +32,19 @@ export const getModelType = model =>
 export const applyDecorationMarks = value => {
   const editor = new Editor({ value })
 
-  value.decorations.forEach(decoration => {
+  value.annotations.forEach(annotation => {
     editor.withoutSaving(() => {
       editor.withoutNormalizing(() => {
-        editor.addMarkAtRange(decoration, {
-          ...decoration.mark.toJSON(),
-          type: `__@${decoration.mark.type}@__`,
-        })
+        editor.addMarkAtRange(
+          editor.value.document.createRange(annotation.toJSON()),
+          {
+            type: `__@${annotation.type}@__`,
+            data: {
+              ...annotation.data.toJSON(),
+              __key__: annotation.key,
+            },
+          }
+        )
       })
     })
   })

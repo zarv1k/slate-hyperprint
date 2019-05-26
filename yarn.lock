@@ -3774,17 +3774,17 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-slate-hyperscript@0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/slate-hyperscript/-/slate-hyperscript-0.12.1.tgz#0221e9d20c4bf78682373cfb74c3adafb19b768e"
-  integrity sha512-lbYtma1T57fdc8qbPVzt1Zhel94wiQxAM69cdF4f1MfZTAtlBKk0AQK+N5ShLkIVBCL8rn5f5CTlOF752PIoNQ==
+slate-hyperscript@0.13.3:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/slate-hyperscript/-/slate-hyperscript-0.13.3.tgz#d217fb302f509c30abf2eefb843d8d6dad877abe"
+  integrity sha512-dbBIqP1bppza+aiab8pZXitcr2yUYd4R8FdMbsZTXsvKSPqY0dK+vIaWjYs48higT3ZFDO3VaT3KwXwLMBuLNg==
   dependencies:
     is-plain-object "^2.0.4"
 
-slate@0.46.1:
-  version "0.46.1"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.46.1.tgz#339f33d63422672235d57419c88b2f6c7e3efa14"
-  integrity sha512-tO1HYydPbyZ/Lhqmm4T1CbcCS4VvBV2hShELpa8R03S23Uk7XIVj7tfLKrDAhwM3R5T7HM3xT4L6nk0pOyjVrw==
+slate@0.47.3:
+  version "0.47.3"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.47.3.tgz#137f5b605bf2f9a0ba8fd800cf8f53b36a691eff"
+  integrity sha512-Xcnpbvt7QfLGra7lJDH5CWj9VT7eV+me2jnQ6DHGB1Lp2S7rSVIfj+Tv7j+5exsNiNCrwBi4jB2+0GrJKQRQDQ==
   dependencies:
     debug "^3.1.0"
     direction "^0.1.5"

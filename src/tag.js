@@ -6,11 +6,12 @@ import printAttribute from './attributes'
 
 class Tag {
   constructor(args = {}) {
-    const { name, children, attributes } = args
+    const { name, children, attributes, selfClosingPair } = args
 
     this.name = name || ''
     this.children = children || []
     this.attributes = attributes || {}
+    this.selfClosingPair = selfClosingPair || false
 
     return this
   }
@@ -36,6 +37,14 @@ class Tag {
 
     if (printedChildren.length === 0) {
       return `<${openingTagInner} />`
+    }
+
+    if (this.selfClosingPair) {
+      return [
+        `<${openingTagInner} />`,
+        printedChildren.join(''),
+        `<${openingTagInner} />`,
+      ].join('')
     }
 
     return [

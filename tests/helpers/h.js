@@ -17,7 +17,7 @@ export const defaultHyperscript = {
     bold: 'bold',
     italic: 'italic',
   },
-  decorations: {
+  annotations: {
     highlight: 'highlight',
   },
 }

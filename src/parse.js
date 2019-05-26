@@ -10,6 +10,7 @@ import {
   insertFocusedSelectionTagMarkers,
   isSelectionSet,
 } from './selection'
+import { Record } from 'immutable'
 
 // All Tag parsers
 const PARSERS = {
@@ -61,7 +62,7 @@ const PARSERS = {
     }),
   ],
   text: (text, options) => {
-    const leaves = text.getLeaves()
+    const leaves = text.getLeaves([], [])
     const leavesTags = leaves.flatMap(leaf => parse(leaf, options)).toArray()
 
     if (options.preserveKeys) {
@@ -90,6 +91,7 @@ const PARSERS = {
           name: getTagName(mark, options),
           attributes: getAttributes(mark, options, canPrintAsShorthand(mark)),
           children: acc,
+          selfClosingPair: isDecorationMark(mark),
         }),
       ],
       [
@@ -168,27 +170,46 @@ function getAttributes(
 
   // data
   if (model.object !== 'value' || options.preserveData) {
-    if (!asShorthand && !model.data.isEmpty()) {
-      result.data = model.data.toJSON()
+    const data = model.data.delete('__key__').toJSON()
+    if (!asShorthand && Object.keys(data).length > 0) {
+      result.data = data
     } else {
       // Spread the data as individual attributes
-      result = { ...result, ...model.data.toJSON() }
+      result = { ...result, ...data }
     }
   }
 
-  if (result.type && isDecorationMark(model)) {
-    result.type = getModelType(result.type)
+  if (isDecorationMark(model)) {
+    result.key = model.data.get('__key__')
+    if (result.type) {
+      result.type = getModelType(result.type)
+    }
   }
 
   return result
 }
 
-/*
+/**
+ * Leaf model has been removed and text.getLeaves() model returns list on records which don't have 'object' property
+ * This function is used for recognizing leaf-like records
+ */
+
+function isPseudoLeafRecord(model) {
+  return (
+    model instanceof Record &&
+    model.text !== undefined &&
+    model.annotations &&
+    model.decorations &&
+    model.marks
+  )
+}
+
+/**
  * Parse a Slate model to a Tag representation
  */
 
 function parse(model, options) {
-  const object = model.object
+  const object = isPseudoLeafRecord(model) ? 'leaf' : model.object
   const parser = PARSERS[object]
 
   if (!parser) {
@@ -196,7 +217,7 @@ function parse(model, options) {
   }
 
   if (object === 'value') {
-    if (model.decorations.size > 0) {
+    if (model.annotations.size > 0) {
       model = applyDecorationMarks(model)
     }
 
@@ -216,7 +237,9 @@ function parse(model, options) {
 function canPrintAsShorthand(model) {
   const validAttributeKey = key => /^[a-zA-Z]/.test(key)
 
-  return model.data.every((value, key) => validAttributeKey(key))
+  return model.data
+    .delete('__key__')
+    .every((value, key) => validAttributeKey(key))
 }
 
 /**
