@@ -1,10 +1,10 @@
 import Tag from './tag'
 import { printString } from './utils'
 import {
-  applyDecorationMarks,
+  applyAnnotationMarks,
   getModelType,
-  isDecorationMark,
-} from './decoration'
+  isAnnotationMark,
+} from './annotation'
 import {
   isSelectionAtStartOfDocument,
   insertFocusedSelectionTagMarkers,
@@ -91,7 +91,7 @@ const PARSERS = {
           name: getTagName(mark, options),
           attributes: getAttributes(mark, options, canPrintAsShorthand(mark)),
           children: acc,
-          selfClosingPair: isDecorationMark(mark),
+          selfClosingPair: isAnnotationMark(mark),
         }),
       ],
       [
@@ -171,7 +171,10 @@ function getAttributes(
   // data
   if (model.object !== 'value' || options.preserveData) {
     const data = model.data.delete('__key__').toJSON()
-    if (!asShorthand && Object.keys(data).length > 0) {
+    if (
+      Object.keys(data).length > 0 &&
+      (!asShorthand || model.object === 'value')
+    ) {
       result.data = data
     } else {
       // Spread the data as individual attributes
@@ -179,7 +182,7 @@ function getAttributes(
     }
   }
 
-  if (isDecorationMark(model)) {
+  if (isAnnotationMark(model)) {
     result.key = model.data.get('__key__')
     if (result.type) {
       result.type = getModelType(result.type)
@@ -218,7 +221,7 @@ function parse(model, options) {
 
   if (object === 'value') {
     if (model.annotations.size > 0) {
-      model = applyDecorationMarks(model)
+      model = applyAnnotationMarks(model)
     }
 
     if (model.selection.isFocused) {

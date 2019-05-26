@@ -1,13 +1,13 @@
 import { Editor } from 'slate'
 
 /**
- * Checks is mark type is decoration in real
+ * Checks is mark type is annotation in real
  *
  * @param {Mark} mark
  * @returns {boolean}
  */
 
-export const isDecorationMark = mark =>
+export const isAnnotationMark = mark =>
   mark.object === 'mark' && /__@.+@__/.test(mark.type)
 
 /**
@@ -18,18 +18,18 @@ export const isDecorationMark = mark =>
  */
 
 export const getModelType = model =>
-  isDecorationMark(model) ? model.type.replace(/__@(.+)@__/, '$1') : model.type
+  isAnnotationMark(model) ? model.type.replace(/__@(.+)@__/, '$1') : model.type
 
 /**
- * Applies decoration marks
+ * Applies annotation marks
  *
- * The easiest way to print decoration tags is by applying decoration marks to slate document.
- * To identify marks which are decorations in real while printing tags, mark type is wrapped intentionally.
+ * The easiest way to print annotation tags is by applying annotation marks to slate document.
+ * To identify marks which are annotations in real while printing tags, mark type is wrapped intentionally.
  * @param {Value} value
  * @returns {Value}
  */
 
-export const applyDecorationMarks = value => {
+export const applyAnnotationMarks = value => {
   const editor = new Editor({ value })
 
   value.annotations
