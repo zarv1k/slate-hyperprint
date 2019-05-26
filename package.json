@@ -6,6 +6,7 @@
   "repository": "git://github.com/zarv1k/slate-hyperprint.git",
   "main": "./dist/index.js",
   "files": ["dist", "index.d.ts"],
+  "homepage": "https://zarv1k.github.io/slate-hyperprint",
   "dependencies": {
     "is-plain-object": "^2.0.4",
     "prettier": "1.13.6",
@@ -34,8 +35,8 @@
     "http-server": "^0.10.0",
     "immutable": "^3.8.2",
     "mocha": "^3.0.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "slate": "0.47.3",
     "slate-hyperscript": "0.13.3"
   },
@@ -45,7 +46,7 @@
     "lint": "eslint ./src ./website",
     "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --reporter=list",
     "build-website": "browserify ./website/main.js -o ./website/bundle.js -t [ babelify --presets [ es2015 react stage-0 ] ]",
-    "serve-website": "http-server ./website/ -p 8080",
+    "serve-website": "http-server ./website/ -p 8000",
     "start": "npm run build-website; npm run serve-website",
     "deploy-website": "npm run build-website; gh-pages -d ./website"
   },
