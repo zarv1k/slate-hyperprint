@@ -12,7 +12,7 @@ var _tag2 = _interopRequireDefault(_tag);
 
 var _utils = require('./utils');
 
-var _decoration = require('./decoration');
+var _annotation = require('./annotation');
 
 var _selection2 = require('./selection');
 
@@ -86,7 +86,7 @@ var PARSERS = {
         name: getTagName(mark, options),
         attributes: getAttributes(mark, options, canPrintAsShorthand(mark)),
         children: acc,
-        selfClosingPair: (0, _decoration.isDecorationMark)(mark)
+        selfClosingPair: (0, _annotation.isAnnotationMark)(mark)
       })];
     }, [{
       print: function print(o) {
@@ -138,7 +138,7 @@ var PARSERS = {
   // data
   if (model.object !== 'value' || options.preserveData) {
     var data = model.data.delete('__key__').toJSON();
-    if (!asShorthand && Object.keys(data).length > 0) {
+    if (Object.keys(data).length > 0 && (!asShorthand || model.object === 'value')) {
       result.data = data;
     } else {
       // Spread the data as individual attributes
@@ -146,10 +146,10 @@ var PARSERS = {
     }
   }
 
-  if ((0, _decoration.isDecorationMark)(model)) {
+  if ((0, _annotation.isAnnotationMark)(model)) {
     result.key = model.data.get('__key__');
     if (result.type) {
-      result.type = (0, _decoration.getModelType)(result.type);
+      result.type = (0, _annotation.getModelType)(result.type);
     }
   }
 
@@ -179,7 +179,7 @@ function parse(model, options) {
 
   if (object === 'value') {
     if (model.annotations.size > 0) {
-      model = (0, _decoration.applyDecorationMarks)(model);
+      model = (0, _annotation.applyAnnotationMarks)(model);
     }
 
     if (model.selection.isFocused) {
@@ -243,7 +243,7 @@ function getTagName(model, options) {
  */
 
 function getHyperscriptTag(model, hyperscript) {
-  var modelType = (0, _decoration.getModelType)(model);
+  var modelType = (0, _annotation.getModelType)(model);
 
   var objects = model.object + 's';
 

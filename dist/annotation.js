@@ -3,20 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.applyDecorationMarks = exports.getModelType = exports.isDecorationMark = undefined;
+exports.applyAnnotationMarks = exports.getModelType = exports.isAnnotationMark = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _slate = require('slate');
 
 /**
- * Checks is mark type is decoration in real
+ * Checks is mark type is annotation in real
  *
  * @param {Mark} mark
  * @returns {boolean}
  */
 
-var isDecorationMark = exports.isDecorationMark = function isDecorationMark(mark) {
+var isAnnotationMark = exports.isAnnotationMark = function isAnnotationMark(mark) {
   return mark.object === 'mark' && /__@.+@__/.test(mark.type);
 };
 
@@ -28,19 +28,19 @@ var isDecorationMark = exports.isDecorationMark = function isDecorationMark(mark
  */
 
 var getModelType = exports.getModelType = function getModelType(model) {
-  return isDecorationMark(model) ? model.type.replace(/__@(.+)@__/, '$1') : model.type;
+  return isAnnotationMark(model) ? model.type.replace(/__@(.+)@__/, '$1') : model.type;
 };
 
 /**
- * Applies decoration marks
+ * Applies annotation marks
  *
- * The easiest way to print decoration tags is by applying decoration marks to slate document.
- * To identify marks which are decorations in real while printing tags, mark type is wrapped intentionally.
+ * The easiest way to print annotation tags is by applying annotation marks to slate document.
+ * To identify marks which are annotations in real while printing tags, mark type is wrapped intentionally.
  * @param {Value} value
  * @returns {Value}
  */
 
-var applyDecorationMarks = exports.applyDecorationMarks = function applyDecorationMarks(value) {
+var applyAnnotationMarks = exports.applyAnnotationMarks = function applyAnnotationMarks(value) {
   var editor = new _slate.Editor({ value: value });
 
   value.annotations.valueSeq().reverse().forEach(function (annotation) {
