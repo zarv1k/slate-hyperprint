@@ -1,6 +1,6 @@
 import { printFocusedSelection } from './selection'
 
-const charsToEscape = ['<', '>', '{', '}', "'", '"', '\n']
+const charsToEscape = ['<', '>', '{', '}', "'", '"', '\n', '\r']
 
 function shouldBeEscaped(s) {
   return charsToEscape.some(char => s.includes(char))
@@ -36,7 +36,8 @@ function escape(s) {
   return `{'${s
     .replace(/\\/g, '\\\\')
     .replace(/'/g, "\\'")
-    .replace(/\n/g, '\\n')}'}`
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')}'}`
 }
 
 function printString(s, options) {

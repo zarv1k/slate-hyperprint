@@ -19,6 +19,7 @@ const input = (
       <paragraph>
         <bold>{"Should escape'em \n\nline breaks."}</bold>
         {'\n'}
+        <bold>{"Should escape'em \r return."}</bold>
       </paragraph>
     </document>
   </value>
@@ -43,6 +44,7 @@ const output = `
     <paragraph>
       <bold>{"Should escape'em \\n\\nline breaks."}</bold>
       {'\\n'}
+      <bold>{"Should escape'em \\r return."}</bold>
     </paragraph>
   </document>
 </value>
