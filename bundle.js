@@ -847,7 +847,7 @@ exports.printString = undefined;
 
 var _selection = require('./selection');
 
-var charsToEscape = ['<', '>', '{', '}', "'", '"', '\n'];
+var charsToEscape = ['<', '>', '{', '}', "'", '"', '\n', '\r'];
 
 function shouldBeEscaped(s) {
   return charsToEscape.some(function (char) {
@@ -882,7 +882,7 @@ function escape(s) {
     return s;
   }
 
-  return '{\'' + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n') + '\'}';
+  return '{\'' + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '\'}';
 }
 
 function printString(s, options) {
@@ -72866,7 +72866,7 @@ var Website = function (_React$Component) {
               className: 'App-version',
               href: 'https://www.npmjs.com/package/@zarv1k/slate-hyperprint'
             },
-            'v3.0.1'
+            'v3.1.0'
           )
         )
       );

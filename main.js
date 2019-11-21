@@ -61,7 +61,7 @@ class Website extends React.Component {
             className="App-version"
             href="https://www.npmjs.com/package/@zarv1k/slate-hyperprint"
           >
-            v3.0.1
+            v3.1.0
           </a>
         </footer>
       </div>
